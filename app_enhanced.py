@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from langchain.chains import create_history_aware_retriever, create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_chroma import Chroma
+from langchain.vectorstores import FAISS
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
@@ -61,7 +62,8 @@ def chat():
         documents = process_uploaded_files(uploaded_files)
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=5000, chunk_overlap=500)
         splits = text_splitter.split_documents(documents)
-        vectorstore = Chroma.from_documents(splits, embeddings, persist_directory="./chroma_db")
+        # vectorstore = Chroma.from_documents(splits, embeddings, persist_directory="./chroma_db")
+        vectorstore = FAISS.from_documents(splits, embeddings)
         retriever = vectorstore.as_retriever()
 
 
