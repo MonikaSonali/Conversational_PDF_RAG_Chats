@@ -65,18 +65,7 @@ def chat():
         # vectorstore = Chroma.from_documents(splits, embeddings, persist_directory="./chroma_db")
         vectorstore = FAISS.from_documents(splits, embeddings)
         retriever = vectorstore.as_retriever()
-
-
-        """contextualize_q_prompt: This template focuses on reformulating user questions into standalone questions by leveraging the chat history.
-            Here's a breakdown of what it does:
-            Purpose
-            - Reformulate Context-Dependent Questions:
-                    In conversations, users often ask follow-up questions or refer to earlier context implicitly. For example:
-                    User: "What is its price?"
-                    Without context, it's unclear what "its" refers to. The reformulation process transforms it into a standalone question like:
-                    "What is the price of the product we discussed earlier?"
-            - Improve Retrievability:
-                    Standalone questions are easier for the retriever to match with relevant documents or content, as they contain all necessary context."""
+        
         contextualize_q_prompt = ChatPromptTemplate.from_messages(
             [
                 ("system", "Reformulate the question to make it standalone."),
