@@ -74,8 +74,9 @@ def chat():
             ]
         )
 
+        llm_model = ChatGroq(groq_api_key=api_key, model_name="Gemma2-9b-It")
         history_aware_retriever = create_history_aware_retriever(
-            ChatGroq(groq_api_key=api_key, model_name="Gemma2-9b-It"),
+            llm_model,
             retriever,
             contextualize_q_prompt
         )
@@ -87,9 +88,7 @@ def chat():
             ]   
         )
 
-        question_answer_chain = create_stuff_documents_chain(
-            ChatGroq(groq_api_key=api_key, model_name="Gemma2-9b-It"), qa_prompt
-        )
+        question_answer_chain = create_stuff_documents_chain(llm_model, qa_prompt)
         rag_chain = create_retrieval_chain(history_aware_retriever, question_answer_chain)
 
         def get_session_history(session):
